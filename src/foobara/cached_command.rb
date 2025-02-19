@@ -54,8 +54,11 @@ module Foobara
       end
     end
 
+    # We need to prepend this so that we're overriding the method defined in the class we're mixed into
     module Execute
       def execute
+        return super if foobara_cache_disabled
+
         if foobara_cached_value_present?
           foobara_cached_value
         else
@@ -69,7 +72,8 @@ module Foobara
     include Concern
 
     inherited_overridable_class_attr_accessor :foobara_cache_expiry,
-                                              :foobara_cache_serializer
+                                              :foobara_cache_serializer,
+                                              :foobara_cache_disabled
 
     on_include do
       prepend Execute
@@ -129,6 +133,10 @@ module Foobara
 
     def foobara_cache_expiry
       self.class.foobara_cache_expiry
+    end
+
+    def foobara_cache_disabled
+      self.class.foobara_cache_disabled
     end
   end
 end
