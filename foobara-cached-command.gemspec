@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Miles Georgi"]
   spec.email = ["azimux@gmail.com"]
 
-  spec.summary = "No description. Add one."
+  spec.summary = "Makes it so that any foobara command will cache its result in memory and on disk."
   spec.homepage = "https://github.com/foobara/cached-command"
   spec.license = "MPL-2.0"
   spec.required_ruby_version = Foobara::CachedCommand::MINIMUM_RUBY_VERSION
