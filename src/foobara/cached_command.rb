@@ -15,17 +15,22 @@ module Foobara
         unless data
           if File.exist?(file_path)
             data = Util.symbolize_keys(JSON.parse(File.read(file_path)))
-            data[:expires_at] = Time.parse(data[:expires_at])
-            cache[key] = data
+
+            if data.key?(:expires_at)
+              data[:expires_at] = Time.parse(data[:expires_at])
+              cache[key] = data
+            end
           else
             return nil
           end
         end
 
-        if Time.now > data[:expires_at]
-          cache.delete(key)
-          FileUtils.rm_f(file_path)
-          data = nil
+        if data.key?(:expires_at)
+          if Time.now > data[:expires_at]
+            cache.delete(key)
+            FileUtils.rm_f(file_path)
+            data = nil
+          end
         end
 
         data
@@ -39,6 +44,10 @@ module Foobara
         if expiry && expiry != 0
           data[:expires_at] = created_at + expiry
         end
+
+        basedir = File.dirname(file_path)
+
+        FileUtils.mkdir_p(basedir)
 
         File.write(file_path, JSON.fast_generate(data))
         cache[key] = data
@@ -83,7 +92,7 @@ module Foobara
 
     # TODO: support various caching strategies like memcached or redis, not just local files
     def foobara_cache_path
-      "tmp/#{foobara_cache_key}.json"
+      @foobara_cache_path ||= "tmp/cached_command/#{foobara_cache_key}.json".gsub("::", "/")
     end
 
     # TODO: support caching based on certain inputs...
