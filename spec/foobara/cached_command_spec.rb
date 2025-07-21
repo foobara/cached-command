@@ -9,7 +9,7 @@ RSpec.describe Foobara::CachedCommand do
     stub_module("TestModule")
     stub_class("TestModule::TestCommand", Foobara::Command) do
       def execute
-        %w[a b c]
+        ["a", "b", "c"]
       end
     end
 
@@ -27,13 +27,13 @@ RSpec.describe Foobara::CachedCommand do
 
       expect(outcome).to be_success
       result = outcome.result
-      expect(result).to eq(%w[a b c])
+      expect(result).to eq(["a", "b", "c"])
       expect(File.exist?(cached_data_file)).to be true
 
       outcome = command_class.run
       expect(outcome).to be_success
       result = outcome.result
-      expect(result).to eq(%w[a b c])
+      expect(result).to eq(["a", "b", "c"])
 
       # test loading from disk...
       described_class.cache.clear
@@ -41,7 +41,7 @@ RSpec.describe Foobara::CachedCommand do
       outcome = command_class.run
       expect(outcome).to be_success
       result = outcome.result
-      expect(result).to eq(%w[a b c])
+      expect(result).to eq(["a", "b", "c"])
 
       # test expiring
       described_class.cache.transform_values do |value|
@@ -51,7 +51,7 @@ RSpec.describe Foobara::CachedCommand do
       outcome = command_class.run
       expect(outcome).to be_success
       result = outcome.result
-      expect(result).to eq(%w[a b c])
+      expect(result).to eq(["a", "b", "c"])
     end
   end
 end
