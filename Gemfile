@@ -5,7 +5,7 @@ ruby Foobara::CachedCommand::MINIMUM_RUBY_VERSION
 
 gemspec
 
-gem "foobara-dotenv-loader"
+gem "foobara-dotenv-loader", "< 2.0.0"
 
 gem "rake"
 
