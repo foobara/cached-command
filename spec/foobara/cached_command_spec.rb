@@ -1,5 +1,6 @@
 RSpec.describe Foobara::CachedCommand do
   after do
+    described_class.reset_all
     FileUtils.rm_f(cached_data_file)
     FileUtils.rm_f(File.dirname(cached_data_file))
   end

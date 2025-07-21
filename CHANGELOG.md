@@ -1,3 +1,7 @@
+## [1.0.0] - 2025-07-21
+
+- Add .reset_all for test suites
+
 ## [0.0.2] - 2025-02-19
 
 - Fix bugs with tmp file name
